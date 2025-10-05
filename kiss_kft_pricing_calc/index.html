@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiss Kft – Díjkalkulátor</title>
+  <style>
+    :root{
+      --bg:#0b0b0c;
+      --panel:#141416;
+      --panel-2:#1b1c1f;
+      --text:#e6e6e6;
+      --muted:#9ca3af;
+      --silver:#c0c0c0;
+      --accent:#d1d5db;
+      --border:#2a2b31;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--border);padding:8px 12px;border-radius:999px;color:var(--silver);font-size:12px}
+    h1{font-size:28px;margin:12px 0 6px}
+    p.lead{color:var(--muted);margin:0 0 12px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:960px){.grid{grid-template-columns:2fr 1fr}}
+    .card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .card .inner{padding:16px}
+    .section-title{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+    .section-title .dot{width:26px;height:26px;border-radius:10px;background:#f5f5f5;color:#111;display:grid;place-items:center;font-weight:700;font-size:12px}
+    .row{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:680px){.row{grid-template-columns:1fr 1fr}}
+    .label{font-size:13px;color:var(--text);opacity:.9;margin-bottom:4px}
+    .hint{font-size:12px;color:var(--muted);margin-top:2px}
+    .control{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:8px 0}
+    input[type=number], select{width:140px;text-align:right;padding:10px 12px;background:#0e0f11;color:var(--text);border:1px solid var(--border);border-radius:12px;outline:none}
+    input[type=range]{width:100%}
+    .qty{display:flex;align-items:center;gap:8px}
+    .btn{padding:6px 12px;border:1px solid var(--border);border-radius:12px;background:#0e0f11;color:var(--text);cursor:pointer}
+    .btn:hover{background:#16181c}
+    .pill{padding:10px 12px;border-radius:12px;background:#0f1012;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,#2e2f35,transparent);margin:10px 0}
+    .summary .rowline{display:flex;justify-content:space-between;align-items:center;margin:6px 0;font-size:14px}
+    .summary .total{font-size:18px;font-weight:700}
+    .footer{color:var(--muted);text-align:center;font-size:12px;margin:10px 0 30px}
+    .kicker{font-size:12px;color:var(--muted);margin:6px 0 14px}
+    .brand{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:680px){.brand{grid-template-columns:1fr 1fr}}
+    a.link{color:var(--silver)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">✨ Modern díjkalkulátor</div>
+    <h1>Kiss Kft</h1>
+    <p class="lead">Interaktív digitális tartalomkészítő árkalkulátor — fekete–ezüst stílus, mobilra optimalizálva.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="inner">
+          <div class="section-title"><div class="dot">⚙︎</div><div><strong>Beállítások</strong><div class="kicker">Személyre szabható díjszabás</div></div></div>
+
+          <div class="brand">
+            <div>
+              <div class="label">Vállalkozás neve</div>
+              <input id="brand" type="text" value="Kiss Kft" style="width:100%;text-align:left">
+              <div class="hint">Fejlécben jelenik meg</div>
+            </div>
+            <div>
+              <div class="label">Ágazat</div>
+              <input id="sector" type="text" value="Digitális tartalomkészítő" style="width:100%;text-align:left">
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <div class="card"><div class="inner">
+              <div class="section-title"><div class="dot">📷</div><div><strong>Session munka</strong><div class="kicker">150–250 USD / óra (irányadó)</div></div></div>
+              <div class="control">
+                <div>
+                  <div class="label">Órák</div>
+                  <div class="qty">
+                    <button class="btn" onclick="step('hours',-1,0)">−</button>
+                    <input id="hours" type="number" min="0" step="1" value="2">
+                    <button class="btn" onclick="step('hours',1,0)">+</button>
+                  </div>
+                  <div class="hint">Teljes számlázható óraszám</div>
+                </div>
+                <div style="flex:1">
+                  <div class="label">Óradíj</div>
+                  <div class="control">
+                    <input id="hourly" type="number" value="200">
+                    <span id="perHourSuffix" class="hint" style="padding-bottom:8px">$/h</span>
+                  </div>
+                  <input id="hourlyRange" type="range" min="50" max="500" step="5" value="200">
+                  <div class="pill"><span>Session részösszeg</span><span id="sessionSubtotal">—</span></div>
+                </div>
+              </div>
+            </div></div>
+
+            <div class="card"><div class="inner">
+              <div class="section-title"><div class="dot">🖼️</div><div><strong>Szerkesztés</strong><div class="kicker">~ 50 USD / kép (irányadó)</div></div></div>
+              <div class="control">
+                <div>
+                  <div class="label">Képek száma</div>
+                  <div class="qty">
+                    <button class="btn" onclick="step('imageCount',-1,0)">−</button>
+                    <input id="imageCount" type="number" min="0" step="1" value="20">
+                    <button class="btn" onclick="step('imageCount',1,0)">+</button>
+                  </div>
+                </div>
+                <div style="flex:1">
+                  <div class="label">Ár / kép</div>
+                  <div class="control">
+                    <input id="editPerImage" type="number" value="50">
+                    <span class="hint" style="padding-bottom:8px">$/kép</span>
+                  </div>
+                  <input id="editRange" type="range" min="0" max="200" step="5" value="50">
+                  <div class="pill"><span>Szerkesztés részösszeg</span><span id="editSubtotal">—</span></div>
+                </div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="row" style="margin-top:12px">
+            <div class="card"><div class="inner">
+              <div class="section-title"><div class="dot">📚</div><div><strong>Albumok</strong><div class="kicker">100–300 USD / db (irányadó)</div></div></div>
+              <div class="control">
+                <div>
+                  <div class="label">Darabszám</div>
+                  <div class="qty">
+                    <button class="btn" onclick="step('albumQty',-1,0)">−</button>
+                    <input id="albumQty" type="number" min="0" step="1" value="0">
+                    <button class="btn" onclick="step('albumQty',1,0)">+</button>
+                  </div>
+                </div>
+                <div style="flex:1">
+                  <div class="label">Ár / album</div>
+                  <div class="control">
+                    <input id="albumPrice" type="number" value="150">
+                    <span class="hint" style="padding-bottom:8px">$/db</span>
+                  </div>
+                  <input id="albumRange" type="range" min="0" max="600" step="10" value="150">
+                  <div class="pill"><span>Albumok részösszeg</span><span id="albumSubtotal">—</span></div>
+                </div>
+              </div>
+            </div></div>
+
+            <div class="card"><div class="inner">
+              <div class="section-title"><div class="dot">%</div><div><strong>Korrekciók</strong><div class="kicker">Kedvezmény & adó</div></div></div>
+              <div class="control">
+                <div>
+                  <div class="label">Kedvezmény (fix)</div>
+                  <input id="discount" type="number" min="0" value="0">
+                </div>
+                <div>
+                  <div class="label">Adó (%)</div>
+                  <input id="taxPct" type="number" min="0" value="0">
+                </div>
+              </div>
+              <div class="control">
+                <div>
+                  <div class="label">Pénznem</div>
+                  <select id="currency">
+                    <option value="USD:$" selected>USD ($)</option>
+                    <option value="EUR:€">EUR (€)</option>
+                    <option value="GBP:£">GBP (£)</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="label">Stílus</div>
+                  <select id="style">
+                    <option selected>Fekete–ezüst</option>
+                    <option>Minimal</option>
+                    <option>Bold</option>
+                    <option>Organic</option>
+                  </select>
+                </div>
+              </div>
+              <div class="hint">Tipp: előbb a kedvezményt állítsd, majd az adót. Negatív összeg nem engedélyezett.</div>
+            </div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card summary">
+        <div class="inner">
+          <div class="section-title"><div class="dot">Σ</div><div><strong>Összesítés</strong><div class="kicker">Élő bontás</div></div></div>
+          <div class="rowline"><span>Session</span><span id="sumSession">—</span></div>
+          <div class="rowline"><span>Szerkesztés</span><span id="sumEdit">—</span></div>
+          <div class="rowline"><span>Albumok</span><span id="sumAlbum">—</span></div>
+          <div class="divider"></div>
+          <div class="rowline"><span>Részösszeg</span><span id="sumSubtotal">—</span></div>
+          <div class="rowline"><span>Kedvezmény</span><span id="sumDiscount">—</span></div>
+          <div class="rowline"><span>Adóalap</span><span id="sumTaxBase">—</span></div>
+          <div class="rowline"><span>Adó (<span id="sumTaxPct">0</span>%)</span><span id="sumTax">—</span></div>
+          <div class="divider"></div>
+          <div class="rowline total"><span>Végösszeg</span><span id="sumTotal">—</span></div>
+          <div class="divider"></div>
+          <div class="hint">Irányadó értékek a Clarity Studio Photography példából: session $150–$250 / óra, szerkesztés $50 / kép, albumok $100–$300 / db.</div>
+        </div>
+      </div>
+
+      <div class="footer">Teljesen reszponzív, minden vezérlő működik és valós időben frissít.</div>
+    </div>
+  </div>
+
+  <script>
+    const els = {
+      brand: document.getElementById('brand'),
+      sector: document.getElementById('sector'),
+      hours: document.getElementById('hours'),
+      hourly: document.getElementById('hourly'),
+      hourlyRange: document.getElementById('hourlyRange'),
+      imageCount: document.getElementById('imageCount'),
+      editPerImage: document.getElementById('editPerImage'),
+      editRange: document.getElementById('editRange'),
+      albumQty: document.getElementById('albumQty'),
+      albumPrice: document.getElementById('albumPrice'),
+      albumRange: document.getElementById('albumRange'),
+      discount: document.getElementById('discount'),
+      taxPct: document.getElementById('taxPct'),
+      currency: document.getElementById('currency'),
+      style: document.getElementById('style'),
+      perHourSuffix: document.getElementById('perHourSuffix'),
+      sessionSubtotal: document.getElementById('sessionSubtotal'),
+      editSubtotal: document.getElementById('editSubtotal'),
+      albumSubtotal: document.getElementById('albumSubtotal'),
+      sumSession: document.getElementById('sumSession'),
+      sumEdit: document.getElementById('sumEdit'),
+      sumAlbum: document.getElementById('sumAlbum'),
+      sumSubtotal: document.getElementById('sumSubtotal'),
+      sumDiscount: document.getElementById('sumDiscount'),
+      sumTaxBase: document.getElementById('sumTaxBase'),
+      sumTaxPct: document.getElementById('sumTaxPct'),
+      sumTax: document.getElementById('sumTax'),
+      sumTotal: document.getElementById('sumTotal'),
+      title: document.querySelector('h1'),
+      lead: document.querySelector('.lead')
+    };
+
+    function fmt(n, currency){
+      const [code, sym] = currency.split(':');
+      const val = isFinite(n) ? n : 0;
+      try{
+        return new Intl.NumberFormat(undefined,{style:'currency',currency:code}).format(val);
+      }catch(e){
+        return sym + val.toFixed(2);
+      }
+    }
+
+    function calc(){
+      const hours = +els.hours.value || 0;
+      const hourly = +els.hourly.value || 0;
+      const imageCount = +els.imageCount.value || 0;
+      const editPerImage = +els.editPerImage.value || 0;
+      const albumQty = +els.albumQty.value || 0;
+      const albumPrice = +els.albumPrice.value || 0;
+      const discount = Math.max(0, +els.discount.value || 0);
+      const taxPct = Math.max(0, +els.taxPct.value || 0);
+      const currency = els.currency.value;
+
+      const session = hours * hourly;
+      const editing = imageCount * editPerImage;
+      const albums = albumQty * albumPrice;
+      const subtotal = session + editing + albums;
+      const taxBase = Math.max(0, subtotal - discount);
+      const tax = taxBase * (taxPct/100);
+      const total = Math.max(0, taxBase + tax);
+
+      els.sessionSubtotal.textContent = fmt(session, currency);
+      els.editSubtotal.textContent = fmt(editing, currency);
+      els.albumSubtotal.textContent = fmt(albums, currency);
+
+      els.sumSession.textContent = fmt(session, currency);
+      els.sumEdit.textContent = fmt(editing, currency);
+      els.sumAlbum.textContent = fmt(albums, currency);
+      els.sumSubtotal.textContent = fmt(subtotal, currency);
+      els.sumDiscount.textContent = '−' + fmt(Math.min(discount, subtotal), currency);
+      els.sumTaxBase.textContent = fmt(taxBase, currency);
+      els.sumTaxPct.textContent = taxPct.toString();
+      els.sumTax.textContent = fmt(tax, currency);
+      els.sumTotal.textContent = fmt(total, currency);
+
+      const sym = currency.split(':')[1];
+      els.perHourSuffix.textContent = sym + '/h';
+
+      // Update branding
+      const b = els.brand.value.trim() || 'Kiss Kft';
+      const s = els.sector.value.trim() || 'Digitális tartalomkészítő';
+      els.title.textContent = b;
+      els.lead.textContent = 'Interaktív ' + s + ' árkalkulátor — fekete–ezüst stílus, mobilra optimalizálva.';
+    }
+
+    function bind(){
+      ['hours','hourly','imageCount','editPerImage','albumQty','albumPrice','discount','taxPct','currency','brand','sector']
+        .forEach(id => els[id].addEventListener('input', calc));
+      els.hourlyRange.addEventListener('input', e => { els.hourly.value = e.target.value; calc(); });
+      els.editRange.addEventListener('input', e => { els.editPerImage.value = e.target.value; calc(); });
+      els.albumRange.addEventListener('input', e => { els.albumPrice.value = e.target.value; calc(); });
+    }
+
+    function step(id, delta, min){
+      const el = els[id];
+      const v = (+el.value || 0) + delta;
+      el.value = Math.max(min, v);
+      calc();
+    }
+
+    window.step = step;
+    bind();
+    calc();
+  </script>
+</body>
+</html>
